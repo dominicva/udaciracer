@@ -85,6 +85,8 @@ async function handleCreateRace() {
   const race = await createRace(player, track);
 
   // TODO - update the store with the race id
+  store.race_id = race.ID;
+  console.log('store after update', store);
 
   // The race has been created, now start the countdown
   // TODO - call the async function runCountdown
@@ -232,10 +234,11 @@ function renderCountdown(count) {
 	`;
 }
 
+// {/* <h1>Race: ${track.name}</h1> */}
 function renderRaceStartView(track, racers) {
   return `
 		<header>
-			<h1>Race: ${track.name}</h1>
+			<h1>Race:</h1>
 		</header>
 		<main id="two-columns">
 			<section id="leaderBoard">
