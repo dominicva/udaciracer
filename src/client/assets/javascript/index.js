@@ -82,8 +82,9 @@ async function handleCreateRace() {
   const { track_id, player_id } = store;
 
   // const race = TODO - invoke the API call to create the race, then save the result
+  console.log('createRace args: (track_id), (player_id)', track_id, player_id);
   const race = await createRace(player_id, track_id);
-  console.log('race returned from createRace', race);
+  console.log('race returned from createRace', race); // INCORRECT TRACK BEING RETURNED
 
   // TODO - update the store with the race id
   store.race_id = race.ID;
@@ -143,7 +144,6 @@ async function runCountdown() {
 
 function handleSelectPodRacer(target) {
   console.log('selected a pod', target.id);
-  console.log(typeof target.id);
 
   // remove class selected from all racer options
   const selected = document.querySelector('#racers .selected');
@@ -155,11 +155,12 @@ function handleSelectPodRacer(target) {
   target.classList.add('selected');
 
   // TODO - save the selected racer to the store
-  store.player_id = Number(target.id);
+  store.player_id = parseInt(target.id);
 }
 
 function handleSelectTrack(target) {
   console.log('selected a track', target.id);
+  console.log('selected track type', typeof target.id);
 
   // remove class selected from all track options
   const selected = document.querySelector('#tracks .selected');
@@ -171,11 +172,13 @@ function handleSelectTrack(target) {
   target.classList.add('selected');
 
   // TODO - save the selected track id to the store
+  store.track_id = parseInt(target.id);
 }
 
 function handleAccelerate() {
   console.log('accelerate button clicked');
   // TODO - Invoke the API call to accelerate
+  // CHECK CORRECT ID BEING PASSED DOWN FROM CALL ABOVE
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -347,6 +350,7 @@ function createRace(player_id, track_id) {
   player_id = parseInt(player_id);
   track_id = parseInt(track_id);
   const body = { player_id, track_id };
+  console.log('createRace body:', body);
 
   return fetch(`${SERVER}/api/races`, {
     method: 'POST',
@@ -355,6 +359,10 @@ function createRace(player_id, track_id) {
     body: JSON.stringify(body),
   })
     .then((res) => res.json())
+    .then((res) => {
+      console.log('response from createRace API call', res);
+      return res;
+    })
     .catch((err) => console.log('Problem with createRace request::', err));
 }
 
@@ -366,6 +374,7 @@ function getRace(id) {
 }
 
 function startRace(id) {
+  // MIGHT HAVE TO SUBTRACT 1 FROM RACE ID
   return fetch(`${SERVER}/api/races/${id}/start`, {
     method: 'POST',
     ...defaultFetchOpts(),
