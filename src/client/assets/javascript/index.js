@@ -81,14 +81,13 @@ async function handleCreateRace() {
     const { track_id, player_id } = store;
     // const race = TODO - invoke the API call to create the race, then save the result
     const race = await createRace(player_id, track_id);
-    console.log('race returned from createRace', race); // INCORRECT TRACK BEING RETURNED
+    // console.log('race returned from createRace', race); // INCORRECT TRACK BEING RETURNED
 
     renderAt('#race', renderRaceStartView(race.Track, race.Cars));
 
     // TODO - update the store with the race id
     store.race_id = race.ID;
-    console.log(store);
-    console.log('type check for race_id', typeof store.race_id);
+    // console.log('type check for race_id', typeof store.race_id);
 
     // The race has been created, now start the countdown
     // TODO - call the async function runCountdown
@@ -183,7 +182,6 @@ function handleSelectTrack(target) {
 function handleAccelerate(id) {
   console.log('accelerate button clicked');
   // TODO - Invoke the API call to accelerate
-  // CHECK CORRECT ID BEING PASSED DOWN FROM CALL ABOVE
   accelerate(id);
 }
 
@@ -212,9 +210,9 @@ function renderRacerCard(racer) {
   return `
 		<li class="card podracer" id="${id}">
 			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+			<p>Top speed: ${top_speed}</p>
+			<p>Acceleration: ${acceleration}</p>
+			<p>Handling: ${handling}</p>
 		</li>
 	`;
 }
@@ -379,7 +377,6 @@ function startRace(id) {
     ...defaultFetchOpts(),
   }).catch((err) => console.log('Problem with getRace request::', err));
 }
-// .then((res) => res.json())
 
 function accelerate(id) {
   // POST request to `${SERVER}/api/races/${id}/accelerate`
