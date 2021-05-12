@@ -79,10 +79,11 @@ async function handleCreateRace() {
   renderAt('#race', renderRaceStartView());
 
   // TODO - Get player_id and track_id from the store
-  const { track_id: track, player_id: player } = store;
+  const { track_id, player_id } = store;
 
   // const race = TODO - invoke the API call to create the race, then save the result
-  const race = await createRace(player, track);
+  const race = await createRace(player_id, track_id);
+  console.log('race returned from createRace', race);
 
   // TODO - update the store with the race id
   store.race_id = race.ID;
@@ -142,6 +143,7 @@ async function runCountdown() {
 
 function handleSelectPodRacer(target) {
   console.log('selected a pod', target.id);
+  console.log(typeof target.id);
 
   // remove class selected from all racer options
   const selected = document.querySelector('#racers .selected');
@@ -153,6 +155,7 @@ function handleSelectPodRacer(target) {
   target.classList.add('selected');
 
   // TODO - save the selected racer to the store
+  store.player_id = Number(target.id);
 }
 
 function handleSelectTrack(target) {
