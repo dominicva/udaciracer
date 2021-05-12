@@ -139,7 +139,7 @@ async function runCountdown() {
           resolve();
           return;
         }
-      }, 300);
+      }, 1000);
     });
   } catch (error) {
     console.log(error);
